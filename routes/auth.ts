@@ -1,13 +1,13 @@
 import Express from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { VerifyCallback, JwtPayload } from "jsonwebtoken";
 import mysql from "mysql";
 import bcrypt from "bcrypt";
 import "dotenv/config";
 
-const router = Express.Router();
+const auth = Express.Router();
 const db = mysql.createConnection(process.env.DATABASE_URL || "");
 
-router.post("/register", function (expReq, expRes) {
+auth.post("/register", function (expReq, expRes) {
   const SQL_login =
     "INSERT INTO login (nickname, email, number,  password_hash) VALUES (?, ?, ?, ?);";
   db.query(
@@ -20,31 +20,21 @@ router.post("/register", function (expReq, expRes) {
     ],
     (dbErr) => {
       if (dbErr) {
-        expRes.send(dbErr?.message);
+        expRes.status(400).send("email aready used");
         throw dbErr.message;
-      }
+      } else expRes.send("success data inserted");
     }
   );
-  const SQL_todos =
-    "INSERT INTO todos (id, nickname ) VALUES ((SELECT id FROM login ORDER BY id DESC LIMIT 1 ), ?);";
-  db.query(SQL_todos, [expReq.body.nickname], (dbErr) => {
-    if (dbErr) {
-      expRes.send(dbErr?.message);
-      throw dbErr.message;
-    }
-    expRes.send("success data inserted");
-  });
 });
 
-router.post("/login", (expReq, expRes) => {
+auth.post("/login", (expReq, expRes) => {
   const SQL_password_hash =
     "SELECT id, password_hash FROM login WHERE email = ?";
-
   db.query(SQL_password_hash, expReq.body.email, (dbErr, dbRes) => {
-    if (dbErr) {
-      expRes.send('dbErr?.message');
-      throw 'dbErr.message';
+    if (!dbRes.length) {
+      expRes.status(400).send("email dont found");
     }
+
     const idToken = jwt.sign(
       { id: dbRes[0].id },
       process.env.PRIVATE_KEY || "",
@@ -52,12 +42,19 @@ router.post("/login", (expReq, expRes) => {
     );
     bcrypt.compareSync(expReq.body.password, dbRes[0].password_hash)
       ? expRes.send(idToken)
-      : expRes.send("unsuccess login");
+      : expRes.status(400).send("wrong password");
   });
 });
 
-router.get("/todos", (expReq, expRes) => {
-  const SQL_id = "SElECT nickname, todos FROM todos WHERE id = ?";
+auth.post("/authenticaded", (expReq, ExpRes) => {
+  jwt.verify(expReq.body.tokenid, process.env.PRIVATE_KEY || "", ((err) => {
+    if (err) return ExpRes.send("invalid token");
+    ExpRes.status(200).send('succesful authenticated');
+  }) as VerifyCallback);
+});
+
+auth.post("/nick", (expReq, expRes) => {
+  const SQL_id = "SELECT nickname FROM login WHERE id = ?;";
   const id = jwt.verify(
     expReq.body.tokenid,
     process.env.PRIVATE_KEY || ""
@@ -71,4 +68,4 @@ router.get("/todos", (expReq, expRes) => {
   });
 });
 
-export default router;
+export default auth;
