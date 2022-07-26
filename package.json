@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "start": "pm2-runtime start ecosystem.config.js --env production -i max"
   },
   "dependencies": {
