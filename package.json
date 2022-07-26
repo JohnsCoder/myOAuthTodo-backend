@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --watch",
+    "build": "tsc",
     "start": "pm2-dev ./build/index.js"
   },
   "dependencies": {
