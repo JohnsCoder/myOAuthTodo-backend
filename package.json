@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "pm2-dev ./build/index.js"
+    "start": "pm2-runtime start ecosystem.config.js --env production -i max"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
