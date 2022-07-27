@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "dev": "pm2-dev ./build/index.js",
     "start": "pm2-runtime start ecosystem.config.js --env production -i max"
   },
   "dependencies": {

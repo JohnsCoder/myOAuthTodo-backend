@@ -8,7 +8,7 @@ const db = mysql.createConnection(process.env.DATABASE_URL || "");
 
 todo.post("/get-todo", (expReq, expRes) => {
   const SQL_id =
-    "SELECT todos.idTodos, todos.todos FROM login, todos WHERE login.id = ? AND todos.id = ? ORDER BY idTodos DESC;";
+    "SELECT todos.idTodos, todos.todos FROM login, todos WHERE login.id = ? AND todos.idUser = ? ORDER BY idTodos DESC;";
   const id = jwt.verify(
     expReq.body.tokenid,
     process.env.PRIVATE_KEY || ""
@@ -23,7 +23,7 @@ todo.post("/get-todo", (expReq, expRes) => {
 });
 
 todo.post("/send-todo", (expReq, expRes) => {
-  const SQL_id = "INSERT INTO todos (id, todos) VALUES (?, ?)";
+  const SQL_id = "INSERT INTO todos (idUser, todos) VALUES (?, ?)";
   const id = jwt.verify(
     expReq.body.tokenid,
     process.env.PRIVATE_KEY || ""
