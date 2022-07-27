@@ -10,7 +10,7 @@ require("dotenv/config");
 const todo = express_1.default.Router();
 const db = mysql_1.default.createConnection(process.env.DATABASE_URL || "");
 todo.post("/get-todo", (expReq, expRes) => {
-    const SQL_id = "SELECT todos.idTodos, todos.todos FROM login, todos WHERE login.id = ? AND todos.id = ? ORDER BY idTodos DESC;";
+    const SQL_id = "SELECT todos.idTodos, todos.todos FROM login, todos WHERE login.id = ? AND todos.idUser = ? ORDER BY idTodos DESC;";
     const id = jsonwebtoken_1.default.verify(expReq.body.tokenid, process.env.PRIVATE_KEY || "");
     db.query(SQL_id, [id.id, id.id], (dbErr, dbRes) => {
         if (dbErr) {
@@ -21,7 +21,7 @@ todo.post("/get-todo", (expReq, expRes) => {
     });
 });
 todo.post("/send-todo", (expReq, expRes) => {
-    const SQL_id = "INSERT INTO todos (id, todos) VALUES (?, ?)";
+    const SQL_id = "INSERT INTO todos (idUser, todos) VALUES (?, ?)";
     const id = jsonwebtoken_1.default.verify(expReq.body.tokenid, process.env.PRIVATE_KEY || "");
     db.query(SQL_id, [id.id, expReq.body.todo], (dbErr, dbRes) => {
         if (dbErr) {
