@@ -16,11 +16,13 @@ To see the frontend part visit [myOAuthTodo-backend](https://github.com/JohnsCod
 #
 # Progress -
 
-### Loading... 90%
+### Loading... 100%
 
-- **Create Todo route**
 - ~~**Create Register route**~~
 - ~~**Create Login route**~~
+- ~~**Create GET Todo route**~~
+- ~~**Create POST Todo route**~~
+- ~~**Create DELETE Todo route**~~
 
 #
 # Scripts - 
