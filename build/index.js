@@ -10,7 +10,11 @@ const auth_1 = __importDefault(require("./routes/auth"));
 const todo_1 = __importDefault(require("./routes/todo"));
 const app = (0, express_1.default)();
 app.use(express_1.default.urlencoded());
-app.use((0, cors_1.default)());
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    methods: process.env.CLIENT_METHODS
+};
+app.use((0, cors_1.default)(corsOptions));
 app.use("/auth", auth_1.default);
 app.use("/todos", todo_1.default);
 app.listen(process.env.PORT || 8000, () => console.log("Your Application is running"));

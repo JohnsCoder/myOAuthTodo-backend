@@ -6,7 +6,12 @@ import todo from "./routes/todo";
 const app = express();
 
 app.use(express.urlencoded());
-app.use(cors());
+
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  methods: process.env.CLIENT_METHODS
+}
+app.use(cors(corsOptions));
 app.use("/auth", auth);
 app.use("/todos", todo);
 
