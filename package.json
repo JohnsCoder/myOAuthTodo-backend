@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "pm2-dev ./build/index.js",
-    "start": "pm2-runtime start ecosystem.config.js --env production -i max"
+    "start": "pm2 start ecosystem.config.js --no-daemon --env production -i max"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
