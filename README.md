@@ -4,7 +4,7 @@
 
 #### BACKEND PART
 
-To see the frontend part visit [myOAuthTodo-backend](https://github.com/JohnsCoder/myOauthTodo-frontend)
+To see the frontend part visit [myOAuthTodo-frontend](https://github.com/JohnsCoder/myOauthTodo-frontend)
 
 | **Vite** | **React** | 
 
