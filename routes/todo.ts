@@ -11,7 +11,7 @@ todo.post("/get-todo", (expReq, expRes) => {
     "SELECT todos.idTodos, todos.todos FROM login, todos WHERE login.id = ? AND todos.idUser = ? ORDER BY idTodos DESC;";
   const id = jwt.verify(
     expReq.body.tokenid,
-    process.env.PRIVATE_KEY || ""
+    process.env.PRIVATE_KEY || "0000"
   ) as JwtPayload;
   db.query(SQL_id, [id.id, id.id], (dbErr, dbRes) => {
     if (dbErr) {
@@ -26,7 +26,7 @@ todo.post("/send-todo", (expReq, expRes) => {
   const SQL_id = "INSERT INTO todos (idUser, todos) VALUES (?, ?)";
   const id = jwt.verify(
     expReq.body.tokenid,
-    process.env.PRIVATE_KEY || ""
+    process.env.PRIVATE_KEY || "0000"
   ) as JwtPayload;
   db.query(SQL_id, [id.id, expReq.body.todo], (dbErr, dbRes) => {
     if (dbErr) {

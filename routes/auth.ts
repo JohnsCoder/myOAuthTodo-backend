@@ -2,17 +2,18 @@ import Express from "express";
 import jwt, { VerifyCallback, JwtPayload } from "jsonwebtoken";
 import mysql from "mysql";
 import bcrypt from "bcrypt";
+import {v4 as uuidv4} from "uuid"
 import "dotenv/config";
-
 const auth = Express.Router();
 const db = mysql.createConnection(process.env.DATABASE_URL || "");
 
 auth.post("/register", function (expReq, expRes) {
   const SQL_login =
-    "INSERT INTO login (nickname, email, number,  password_hash) VALUES (?, ?, ?, ?);";
+    "INSERT INTO login (id, nickname, email, number,  password_hash) VALUES (?, ?, ?, ?, ?);";
   db.query(
     SQL_login,
     [
+      uuidv4(),
       expReq.body.nickname,
       expReq.body.email,
       expReq.body.number,
@@ -37,7 +38,7 @@ auth.post("/login", (expReq, expRes) => {
 
     const idToken = jwt.sign(
       { id: dbRes[0].id },
-      process.env.PRIVATE_KEY || "",
+      process.env.PRIVATE_KEY || "0000",
       { expiresIn: "24hr" }
     );
     bcrypt.compareSync(expReq.body.password, dbRes[0].password_hash)
@@ -47,7 +48,7 @@ auth.post("/login", (expReq, expRes) => {
 });
 
 auth.post("/authenticaded", (expReq, ExpRes) => {
-  jwt.verify(expReq.body.tokenid, process.env.PRIVATE_KEY || "", ((err) => {
+  jwt.verify(expReq.body.tokenid, process.env.PRIVATE_KEY || "0000", ((err) => {
     if (err) return ExpRes.send("invalid token");
     ExpRes.status(200).send('succesful authenticated');
   }) as VerifyCallback);
@@ -57,7 +58,7 @@ auth.post("/nick", (expReq, expRes) => {
   const SQL_id = "SELECT nickname FROM login WHERE id = ?;";
   const id = jwt.verify(
     expReq.body.tokenid,
-    process.env.PRIVATE_KEY || ""
+    process.env.PRIVATE_KEY || "0000"
   ) as JwtPayload;
   db.query(SQL_id, id.id, (dbErr, dbRes) => {
     if (dbErr) {
