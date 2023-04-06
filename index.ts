@@ -5,7 +5,7 @@ import auth from "./routes/auth";
 import todo from "./routes/todo";
 const app = express();
 
-app.use(express.urlencoded());
+// app.use(express.urlencoded({extended: false}));
 
 const corsOptions = {
   origin: process.env.CLIENT_URL,
