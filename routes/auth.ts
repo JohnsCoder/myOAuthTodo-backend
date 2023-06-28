@@ -8,36 +8,28 @@ const auth = Express.Router();
 const db = mysql.createConnection(process.env.DATABASE_URL || "");
 
 auth.post("/register", function (expReq, expRes) {
-  let corpo = ''
 
-  expReq.on('data', function(parte) {
-    corpo += parte
-})
-expReq.on('end', () => {
-  expRes.send(corpo)
-})
-
-
-  // const SQL_login =
-  //   "INSERT INTO login (id, nickname, email, number,  password_hash) VALUES (?, ?, ?, ?, ?);";
+  const SQL_login =
+    "INSERT INTO login (id, nickname, email, number,  password_hash) VALUES (?, ?, ?, ?, ?);";
     
-  // db.query(
-  //   SQL_login,
-  //   [
-  //     uuidv4(),
-  //     expReq.body.nickname,
-  //     expReq.body.email,
-  //     expReq.body.number,
-  //     bcrypt.hashSync(expReq.body.password, 8),
-  //   ],
-  //   (dbErr) => {
-  //     if (dbErr) {
-  //       expRes.status(400).send("email aready used");
-  //       throw dbErr.message;
-  //     } else expRes.send("success data inserted");
-  //   }
-  // );
+  db.query(
+    SQL_login,
+    [
+      uuidv4(),
+      expReq.body.nickname,
+      expReq.body.email,
+      expReq.body.number,
+      bcrypt.hashSync(expReq.body.password, 8),
+    ],
+    (dbErr) => {
+      if (dbErr) {
+        expRes.status(400).send("email aready used");
+        throw dbErr.message;
+      } else expRes.send("success data inserted");
+    }
+  );
 });
+
 
 auth.post("/login", (expReq, expRes) => {
   const SQL_password_hash =

@@ -5,13 +5,18 @@ import auth from "./routes/auth";
 import todo from "./routes/todo";
 const app = express();
 
-// app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
   origin: process.env.CLIENT_URL,
-  methods: process.env.CLIENT_METHODS
-}
+  methods: process.env.CLIENT_METHODS,
+};
 app.use(cors(corsOptions));
+
+app.get("/", (req, res) => {
+  res.send("server on");
+});
+
 app.use("/auth", auth);
 app.use("/todos", todo);
 
