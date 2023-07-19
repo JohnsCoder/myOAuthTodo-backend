@@ -1,6 +1,6 @@
-# My Todo OAuth
+# My Todo
 
-### Todo app with login.
+### Todo app.
 
 #### BACKEND PART
 
