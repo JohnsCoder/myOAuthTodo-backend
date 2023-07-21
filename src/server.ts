@@ -17,10 +17,10 @@ export default function server() {
 
   app.get("/", (req, res) => res.status(200).send());
 
-  app.use(json(), emptyString);
+  app.use(json());
 
-  app.use("/auth", auth);
-  app.use("/user", user);
+  app.use("/auth", emptyString, auth);
+  app.use("/user", emptyString, user);
   app.use("/todo", todo);
 
   app.listen(process.env.PORT || 8000, () => "Your Application is running");

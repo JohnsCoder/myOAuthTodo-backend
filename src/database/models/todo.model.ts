@@ -12,7 +12,7 @@ const Todo: ModelStatic<Model<TodoEntity>> = sequel.db.define(
       autoIncrement: true,
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     user_id: {

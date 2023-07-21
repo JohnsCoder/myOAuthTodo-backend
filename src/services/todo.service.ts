@@ -5,13 +5,12 @@ import responseHandler from "../utils/responseHandler";
 async function findTodo(user_id: string) {
   const data = await Todo.findAll({
     where: { user_id },
-    attributes: ["id", "todo", "createdAt"],
+    attributes: ["id", "content", "createdAt"],
   });
 
-  if (data) {
+  if (data[0]) {
     return responseHandler.sucessful(data, 200);
   }
-
   return responseHandler.errorMessage(
     { message: "couldn't find any todo" },
     404
@@ -27,10 +26,30 @@ async function insertTodo(content: TodoEntity) {
   }
 }
 
+async function updateTodo({ id, content }: TodoEntity) {
+  try {
+    const modifiedRows = await Todo.update(
+      { content: "value" },
+      { where: { id } }
+    );
+    if (modifiedRows[0] === 0) {
+      return responseHandler.errorMessage(
+        { message: "couldn't find todo" },
+        404
+      );
+    }
+    if (!content) {
+      await deleteTodo(id!);
+    }
+    return responseHandler.sucessful(undefined, 200);
+  } catch (err) {
+    return responseHandler.errorMessage(err, 400);
+  }
+}
+
 async function deleteTodo(id: number) {
   try {
     const data = await Todo.findByPk(id, { attributes: ["id"] });
-    console.log(data);
     if (data) {
       await Todo.destroy({ where: { id } });
       return responseHandler.sucessful(undefined, 200);
@@ -41,4 +60,4 @@ async function deleteTodo(id: number) {
   }
 }
 
-export { deleteTodo, findTodo, insertTodo };
+export { deleteTodo, findTodo, insertTodo, updateTodo };
