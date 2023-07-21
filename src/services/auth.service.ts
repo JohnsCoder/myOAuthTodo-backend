@@ -10,7 +10,7 @@ async function register(user: UserEntity) {
     await User.create({ ...user, password });
 
     return responseHandler.sucessful(undefined, 201);
-  } catch (err) {
+  } catch (err: any) {
     return responseHandler.errorMessage(err, 400);
   }
 }
@@ -35,7 +35,7 @@ async function login({ email, password }: UserEntity) {
       }
     }
     return responseHandler.errorMessage({ message: "couldn't find user" }, 401);
-  } catch (err) {
+  } catch (err: any) {
     return responseHandler.errorMessage(err, 400);
   }
 }

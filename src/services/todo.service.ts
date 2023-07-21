@@ -22,7 +22,7 @@ async function insertTodo(content: TodoEntity) {
   try {
     await Todo.create(content);
     return responseHandler.sucessful(undefined, 201);
-  } catch (err) {
+  } catch (err: any) {
     return responseHandler.errorMessage(err, 400);
   }
 }
@@ -36,7 +36,7 @@ async function deleteTodo(id: number) {
       return responseHandler.sucessful(undefined, 200);
     }
     return responseHandler.errorMessage({ message: "couldn't find todo" }, 404);
-  } catch (err) {
+  } catch (err: any) {
     return responseHandler.errorMessage(err, 400);
   }
 }
