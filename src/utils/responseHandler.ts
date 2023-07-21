@@ -7,8 +7,8 @@ type Err = {
 
 function errorMessage(err: Err, httpStatusCode: number) {
   let message;
-  if (err.errors?.at(0)?.message) {
-    message = err.errors?.at(0)?.message;
+  if (err.errors) {
+    message = err.errors.at(0)!.message;
   } else {
     message = err.message;
   }
