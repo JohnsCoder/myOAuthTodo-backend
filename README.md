@@ -3,6 +3,7 @@
 ### Todo app.
 
 #### BACKEND PART
+![MyTodo (2)](https://github.com/JohnsCoder/myTodo-backend/assets/62973765/8c43a4c8-17e4-4919-8d90-85b296734b3b)
 
 To see the frontend part visit [myOAuthTodo-frontend](https://github.com/JohnsCoder/myOauthTodo-frontend)
 
