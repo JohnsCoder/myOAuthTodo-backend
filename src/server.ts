@@ -2,7 +2,8 @@ import "dotenv/config";
 import express, { json } from "express";
 import auth from "./controllers/auth.controller";
 import todo from "./controllers/todo.controller";
-import { emptyString } from "./middlewares/emptyString.middleware";
+import { emptyString } from "./middlewares/dataVerify.middleware";
+import user from "./controllers/user.controller";
 
 export default function server() {
   const app = express();
@@ -18,6 +19,7 @@ export default function server() {
 
   app.use(json(), emptyString);
 
+  app.use("/user", user);
   app.use("/auth", auth);
   app.use("/todo", todo);
 
