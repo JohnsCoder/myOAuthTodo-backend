@@ -1,4 +1,5 @@
 import "dotenv/config";
+import cors, { CorsOptions } from "cors";
 import express, { json } from "express";
 import auth from "./controllers/auth.controller";
 import todo from "./controllers/todo.controller";
@@ -8,12 +9,11 @@ import user from "./controllers/user.controller";
 export default function server() {
   const app = express();
 
-  // const corsOptions = {
-  //   origin: process.env.CLIENT_URL,
-  //   methods: process.env.CLIENT_METHODS,
-  // };
+  const corsOptions: CorsOptions = {
+    origin: "*",
+  };
 
-  // app.use(cors(corsOptions));
+  app.use(cors(corsOptions));
 
   app.get("/", (req, res) => res.status(204).send());
 
