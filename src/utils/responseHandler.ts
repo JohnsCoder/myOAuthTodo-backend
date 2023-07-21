@@ -1,10 +1,15 @@
-function errorMessage(err: any, httpStatusCode: number) {
+type Err = {
+  message: string;
+  errors?: {
+    message: string;
+  }[];
+};
+
+function errorMessage(err: Err, httpStatusCode: number) {
   return {
     code: httpStatusCode,
     error: {
-      message: err.errors
-        ? (err.errors as { message: string }[]).at(0)?.message
-        : err.message,
+      message: err.errors![0]?.message || err.message,
     },
   };
 }
