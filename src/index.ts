@@ -5,6 +5,6 @@ import server from "./server";
 
 (async () => {
   await sequel.connect();
-  await sequel.sync([User, Todo]);
+//   await sequel.sync([User, Todo]);
   server();
 })();
