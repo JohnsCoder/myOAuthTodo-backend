@@ -1,22 +1,8 @@
-type Err = {
-  message: string;
-  errors?: {
-    message: string;
-  }[];
-};
-
-function errorMessage(err: Err, httpStatusCode: number) {
-  let message;
-  if (err.errors) {
-    message = err.errors[0].message;
-  } else {
-    message = err.message;
-  }
-
+function errorMessage(err: any, httpStatusCode: number) {
   return {
     code: httpStatusCode,
     error: {
-      message,
+      message: err.errors ? err.errors[0].message : err.message,
     },
   };
 }
