@@ -1,7 +1,7 @@
 import User from "../database/models/user.model";
 import responseHandler from "../utils/responseHandler";
 
-async function findNickName(id: string) {
+async function findNickname(id: string) {
   const data = await User.findByPk(id, {
     attributes: ["nickname"],
   });
@@ -15,5 +15,5 @@ async function findNickName(id: string) {
   );
 }
 
-export { findNickName };
+export { findNickname };
 

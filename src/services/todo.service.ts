@@ -26,6 +26,7 @@ async function insertTodo(content: TodoEntity) {
     return responseHandler.errorMessage(err, 400);
   }
 }
+
 async function deleteTodo(id: number) {
   try {
     const data = await Todo.findByPk(id, { attributes: ["id"] });
@@ -41,4 +42,3 @@ async function deleteTodo(id: number) {
 }
 
 export { deleteTodo, findTodo, insertTodo };
-

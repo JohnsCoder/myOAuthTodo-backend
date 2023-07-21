@@ -40,18 +40,5 @@ async function login({ email, password }: UserEntity) {
   }
 }
 
-async function findNickName(id: string) {
-  const data = await User.findByPk(id, {
-    attributes: ["nickname"],
-  });
+export { login, register };
 
-  if (data) {
-    return responseHandler.sucessful({ nickname: data.get().nickname! }, 200);
-  }
-  return responseHandler.errorMessage(
-    { message: "couldn't find nickname" },
-    404
-  );
-}
-
-export { findNickName, login, register };

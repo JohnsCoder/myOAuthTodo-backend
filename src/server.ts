@@ -19,8 +19,8 @@ export default function server() {
 
   app.use(json(), emptyString);
 
-  app.use("/user", user);
   app.use("/auth", auth);
+  app.use("/user", user);
   app.use("/todo", todo);
 
   app.listen(process.env.PORT || 8000, () => "Your Application is running");
