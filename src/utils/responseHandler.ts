@@ -2,7 +2,9 @@ function errorMessage(err: any, httpStatusCode: number) {
   return {
     code: httpStatusCode,
     error: {
-      message: err.errors || err.message,
+      message: err.errors
+        ? (err.errors as { message: string }[]).at(0)?.message
+        : err.message,
     },
   };
 }
