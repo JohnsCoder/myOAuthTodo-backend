@@ -15,7 +15,7 @@ export default function server() {
 
   app.use(cors(corsOptions));
 
-  app.get("/", (req, res) => res.status(204).send());
+  app.get("/", (req, res) => res.status(200).send());
 
   app.use(json(), emptyString);
 
