@@ -18,9 +18,9 @@ async function findTodo(user_id: string) {
   );
 }
 
-async function insertTodo(todo: TodoEntity) {
+async function insertTodo(content: TodoEntity) {
   try {
-    await Todo.create(todo);
+    await Todo.create(content);
     return responseHandler.sucessful(undefined, 201);
   } catch (err) {
     return responseHandler.errorMessage(err, 400);
