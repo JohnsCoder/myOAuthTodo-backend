@@ -1,9 +1,8 @@
-
 function errorMessage(err: any, httpStatusCode: number) {
   return {
     code: httpStatusCode,
     error: {
-      message: err.errors?.at(0)?.message || err.message,
+      message: err.errors ? err.errors.at(0).message : err.message,
     },
   };
 }
