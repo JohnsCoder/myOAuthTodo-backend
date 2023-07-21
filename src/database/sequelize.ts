@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import { Model, ModelStatic, Sequelize } from "sequelize";
-
 dotenv.config({ path: "./.env" });
 
 class sequel {

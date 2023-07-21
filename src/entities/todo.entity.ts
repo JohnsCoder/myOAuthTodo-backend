@@ -1,4 +1,4 @@
-export type TodoEntity = {
+export interface TodoEntity {
   id?: string;
   todo?: string;
   user_id?: string;
