@@ -6,8 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsnd --watch --transpile-only --rs ./src/index.ts",
-    "use": "nodemon --exec ts-node --esm ./src/index.ts",
-    "start": "pm2 start ecosystem.config.js --no-daemon --env production -i max"
+    "start": "node build"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -18,7 +17,6 @@
     "mysql2": "^3.5.2",
     "pg": "^8.11.1",
     "pg-hstore": "^2.3.4",
-    "pm2": "^5.2.0",
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
