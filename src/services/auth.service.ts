@@ -41,4 +41,3 @@ async function login({ email, password }: UserEntity) {
 }
 
 export { login, register };
-

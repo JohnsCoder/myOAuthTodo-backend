@@ -21,6 +21,15 @@ const Todo: ModelStatic<Model<TodoEntity>> = sequel.db.define(
     },
   },
   {
+    hooks: {
+      afterCreate: (record: Model<TodoEntity, TodoEntity>) => {
+        delete record.dataValues.content;
+        delete record.dataValues.updatedAt;
+        delete record.dataValues.createdAt;
+        delete record.dataValues.user_id;
+      },
+    },
+
     freezeTableName: true,
   }
 );

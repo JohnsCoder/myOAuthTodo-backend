@@ -20,13 +20,16 @@ todo.post("/", authToken, emptyString, async (req, res) => {
   res.status(code).send(data);
 });
 
-todo.put("/", authToken, async (req, res) => {
-  const { code, ...data } = await updateTodo(req.body);
+todo.put("/:id", authToken, async (req, res) => {
+  const { code, ...data } = await updateTodo({
+    id: parseInt(req.params.id),
+    content: req.body.content,
+  });
   res.status(code).send(data);
 });
 
-todo.delete("/", authToken, emptyString, async (req, res) => {
-  const { code, ...data } = await deleteTodo(req.body.id);
+todo.delete("/:id", authToken, emptyString, async (req, res) => {
+  const { code, ...data } = await deleteTodo(parseInt(req.params.id));
   res.status(code).send(data);
 });
 
