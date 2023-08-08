@@ -1,20 +1,17 @@
-function errorMessage(err: any, httpStatusCode: number) {
+function Response(err: any, httpStatusCode: number, data?: any) {
+  if (err) {
+    return {
+      code: httpStatusCode,
+      error: {
+        message: err.errors ? err.errors[0].message : err.message,
+      },
+    };
+  }
+
   return {
     code: httpStatusCode,
-    error: {
-      message: err.errors ? err.errors[0].message : err.message,
-    },
+    data,
   };
 }
 
-function sucessful(
-  payload: string | object | undefined,
-  httpStatusCode: number
-) {
-  return {
-    code: httpStatusCode,
-    payload,
-  };
-}
-
-export default { errorMessage, sucessful };
+export default Response;

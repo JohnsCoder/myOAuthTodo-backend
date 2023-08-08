@@ -1,9 +1,12 @@
 import dotenv from "dotenv";
+import sequelize from "sequelize";
 import { Model, ModelStatic, Sequelize } from "sequelize";
 dotenv.config({ path: "./.env" });
 
 class sequel {
-  private squelize = new Sequelize(process.env.DATABASE_URL as string);
+  private squelize = new Sequelize(process.env.DATABASE_URL as string, {
+    logging: false,
+  });
 
   get db() {
     return this.squelize;
@@ -14,7 +17,7 @@ class sequel {
       await this.squelize.authenticate();
       ("Connection has benn establiched sucessfully.");
     } catch (err) {
-      (err);
+      console.log(err);
     }
   }
 
@@ -24,7 +27,15 @@ class sequel {
         await model.sync({ force: true });
       });
     } catch (err) {
-      (err);
+      console.log(err);
+    }
+  }
+
+  async end() {
+    try {
+      await this.squelize.close();
+    } catch (err) {
+      console.log(err);
     }
   }
 }

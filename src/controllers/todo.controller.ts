@@ -1,12 +1,12 @@
-import Express, { json, urlencoded } from "express";
+import Express from "express";
 import { authToken } from "../middlewares/auth.middleware";
+import { emptyString } from "../middlewares/dataVerify.middleware";
 import {
   deleteTodo,
   findTodo,
   insertTodo,
   updateTodo,
 } from "../services/todo.service";
-import { emptyString } from "../middlewares/dataVerify.middleware";
 const todo = Express.Router();
 
 todo.get("/", authToken, emptyString, async (req, res) => {

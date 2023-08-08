@@ -3,25 +3,23 @@ import cors, { CorsOptions } from "cors";
 import express, { json } from "express";
 import auth from "./controllers/auth.controller";
 import todo from "./controllers/todo.controller";
-import { emptyString } from "./middlewares/dataVerify.middleware";
 import user from "./controllers/user.controller";
+import { emptyString } from "./middlewares/dataVerify.middleware";
 
-export default function server() {
-  const app = express();
+const server = express();
 
-  const corsOptions: CorsOptions = {
-    origin: "*",
-  };
+const corsOptions: CorsOptions = {
+  origin: "*",
+};
 
-  app.use(cors(corsOptions));
+server.use(cors(corsOptions));
 
-  app.get("/", (req, res) => res.status(200).send());
+server.get("/", (req, res) => res.status(200).send());
 
-  app.use(json());
+server.use(json());
 
-  app.use("/auth", emptyString, auth);
-  app.use("/user", emptyString, user);
-  app.use("/todo", todo);
+server.use("/auth", emptyString, auth);
+server.use("/user", emptyString, user);
+server.use("/todo", todo);
 
-  app.listen(process.env.PORT || 8000, () => "Your Application is running");
-}
+export default server;

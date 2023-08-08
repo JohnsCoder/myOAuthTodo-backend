@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from "express";
+import Resp from "../utils/responseHandler";
 
 const emptyString = (req: Request, res: Response, next: NextFunction) => {
   const values = Object.values(req.body);
   for (const value of values) {
     if (!value) {
-      res.status(400).send({
-        message: "cannot have empty values",
-      });
+      const { code, ...data } = Resp(
+        { message: "cannot have empty values" },
+        400
+      );
+      res.status(code).send(data);
       return;
     }
   }

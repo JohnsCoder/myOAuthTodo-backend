@@ -2,16 +2,16 @@ import User from "../database/models/user.model";
 import { UserEntity } from "../entities/user.entity";
 import bcrypt from "../utils/bcrypt";
 import { jwtSign } from "../utils/jwt";
-import responseHandler from "../utils/responseHandler";
+import Response from "../utils/responseHandler";
 
 async function register(user: UserEntity) {
   try {
     const password = await bcrypt.encrypt(user.password!);
     await User.create({ ...user, password });
 
-    return responseHandler.sucessful(undefined, 201);
+    return Response(undefined, 201);
   } catch (err) {
-    return responseHandler.errorMessage(err, 400);
+    return Response(err, 400);
   }
 }
 
@@ -28,16 +28,14 @@ async function login({ email, password }: UserEntity) {
         data.get().password!
       );
       if (authenticaded) {
-        return responseHandler.sucessful(
-          { tokenId: jwtSign(data.get().id!) },
-          202
-        );
+        return Response(undefined, 202, { tokenId: jwtSign(data.get().id!) });
       }
     }
-    return responseHandler.errorMessage({ message: "couldn't find user" }, 401);
+    return Response({ message: "couldn't find user" }, 401);
   } catch (err) {
-    return responseHandler.errorMessage(err, 400);
+    return Response(err, 400);
   }
 }
 
 export { login, register };
+

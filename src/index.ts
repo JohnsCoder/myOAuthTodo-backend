@@ -3,5 +3,5 @@ import server from "./server";
 
 (async () => {
   await sequel.connect();
-  server();
+  server.listen(process.env.PORT || 8000, () => "Your Application is running");
 })();
