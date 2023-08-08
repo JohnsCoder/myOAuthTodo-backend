@@ -1,4 +1,3 @@
-import "dotenv/config";
 import cors, { CorsOptions } from "cors";
 import express, { json } from "express";
 import auth from "./controllers/auth.controller";

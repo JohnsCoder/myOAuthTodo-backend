@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
-import sequelize from "sequelize";
 import { Model, ModelStatic, Sequelize } from "sequelize";
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: ".env" });
 
 class sequel {
   private squelize = new Sequelize(process.env.DATABASE_URL as string, {
