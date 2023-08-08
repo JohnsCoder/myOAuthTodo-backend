@@ -32,22 +32,13 @@ afterAll(async () => {
   await sequelize.end();
 });
 
-describe("/auth", () => {
+describe("/auth - GOOD PATH", () => {
   test("/register - POST", async () => {
     await req
       .post("/auth/register")
       .send(user)
       .then((res) => {
         expect(res.statusCode).toEqual(201);
-      });
-  });
-  test("/register - POST exception", async () => {
-    await req
-      .post("/auth/register")
-      .send({ ...user, id: undefined })
-      .then((res) => {
-        expect(res.body.error.message).toEqual("email must be unique");
-        expect(res.statusCode).toEqual(400);
       });
   });
 
@@ -59,6 +50,28 @@ describe("/auth", () => {
         expect(res.statusCode).toEqual(202);
       });
   });
+
+  test("/ - GET", async () => {
+    await req
+      .get("/auth/")
+      .set("Authorization", `Bearer ${token}`)
+      .then((res) => {
+        expect(res.statusCode).toEqual(204);
+      });
+  });
+});
+
+describe("/auth - BAD PATH", () => {
+  test("/register - POST exception", async () => {
+    await req
+      .post("/auth/register")
+      .send({ ...user, id: undefined })
+      .then((res) => {
+        expect(res.body.error.message).toEqual("email must be unique");
+        expect(res.statusCode).toEqual(400);
+      });
+  });
+
   test("/login - POST exception", async () => {
     await req
       .post("/auth/login")
@@ -68,14 +81,18 @@ describe("/auth", () => {
         expect(res.body.error.message).toEqual("couldn't find user");
       });
   });
-  test("/ - GET", async () => {
+  test("/login - POST user don't found", async () => {
     await req
-      .get("/auth/")
-      .set("Authorization", `Bearer ${token}`)
+      .post("/auth/login")
+      .send({ email: user.email, password: undefined })
       .then((res) => {
-        expect(res.statusCode).toEqual(204);
+        expect(res.statusCode).toEqual(400);
+        expect(res.body.error.message).toEqual(
+          "data and hash arguments required"
+        );
       });
   });
+
   test("/ - GET exception", async () => {
     await req
       .get("/auth/")

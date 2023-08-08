@@ -28,9 +28,6 @@ async function updateTodo({ id, content }: TodoEntity) {
     if (modifiedRows[0] === 0) {
       return Response({ message: "couldn't find todo" }, 404);
     }
-    if (!content) {
-      await deleteTodo(id!);
-    }
     return Response(undefined, 200);
   } catch (err) {
     return Response(err, 400);

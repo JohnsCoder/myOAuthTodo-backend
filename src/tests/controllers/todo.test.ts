@@ -6,6 +6,7 @@ import { TodoEntity } from "../../entities/todo.entity";
 import { UserEntity } from "../../entities/user.entity";
 import { jwtSign } from "../../utils/jwt";
 import server from "../../server";
+import { unsubscribe } from "diagnostics_channel";
 
 const req = supertest(server);
 
@@ -39,7 +40,8 @@ afterAll(async () => {
 
   await sequelize.end();
 });
-describe("/todo", () => {
+
+describe("/todo - GOOD PATH", () => {
   test("/ - POST", async () => {
     await req
       .post("/todo/")
@@ -49,35 +51,27 @@ describe("/todo", () => {
         expect(res.statusCode).toEqual(201);
       });
   });
-  test("/ - POST exception", async () => {
-    await req
-      .post("/todo/")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ ...todo, content: undefined })
-      .then((res) => {
-        expect(res.body.error.message).toEqual("todo.content cannot be null");
-        expect(res.statusCode).toEqual(400);
-      });
-  });
+
   test("/:id - PUT", async () => {
     await req
       .put(`/todo/${todo.id}`)
       .set("Authorization", `Bearer ${token}`)
-      .send({ id: undefined, content: "updated" })
+      .send({ content: "updated" })
       .then((res) => {
         expect(res.statusCode).toEqual(200);
       });
   });
-  test("/:id - PUT exception", async () => {
-    await req
-      .put(`/todo/${todo.id}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({ id: undefined, content: undefined })
-      .then((res) => {
-        expect(res.body.error.message).toEqual("couldn't find todo");
-        expect(res.statusCode).toEqual(404);
-      });
-  });
+
+  // test("/:id - PUT", async () => {
+  //   await req
+  //     .put(`/todo/${todo.id}`)
+  //     .set("Authorization", `Bearer ${token}`)
+  //     .send({ content: "" })
+  //     .then((res) => {
+  //       expect(res.statusCode).toEqual(200);
+  //     });
+  // });
+
   test("/ - GET", async () => {
     await req
       .get("/todo/")
@@ -96,13 +90,61 @@ describe("/todo", () => {
         expect(res.statusCode).toEqual(200);
       });
   });
-  test("/:id - DELETE exception", async () => {
+
+});
+
+
+describe("/todo - BAD PATH", () => {
+
+  test("/ - POST exception", async () => {
+    await req
+      .post("/todo/")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ ...todo, content: undefined })
+      .then((res) => {
+        expect(res.body.error.message).toEqual("todo.content cannot be null");
+        expect(res.statusCode).toEqual(400);
+      });
+  });
+
+  test("/:id - PUT todo dont found", async () => {
+    await req
+      .put(`/todo/${todo.id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({ content: undefined })
+      .then((res) => {
+        expect(res.body.error.message).toEqual("couldn't find todo");
+        expect(res.statusCode).toEqual(404);
+      });
+  });
+
+  test("/:id - PUT exception", async () => {
+    await req
+      .put(`/todo/${undefined}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({  content: "dont will be updated" })
+      .then((res) => {
+        expect(res.body.error.message).toEqual('invalid input syntax for type integer: "NaN"');
+        expect(res.statusCode).toEqual(400);
+      });
+  });
+
+  test("/:id - DELETE user don't found", async () => {
     await req
       .delete(`/todo/${10}`)
       .set("Authorization", `Bearer ${token}`)
       .then((res) => {
         expect(res.body.error.message).toEqual("couldn't find todo");
         expect(res.statusCode).toEqual(404);
+      });
+  });
+  test("/:id - DELETE exception", async () => {
+    await req
+      .delete(`/todo/${undefined}`)
+      .set("Authorization", `Bearer ${token}`)
+      .then((res) => {
+        expect(res.body.error.message).toEqual('column \"nan\" does not exist');
+        expect(res.statusCode).toEqual(400);
       });
   });
 });
